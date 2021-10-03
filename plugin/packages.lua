@@ -95,7 +95,7 @@ require "paq" {
               hijack_netrw        = true,
               open_on_setup       = false,
               ignore_ft_on_setup  = {},
-              update_to_buf_dir   = true,
+              -- update_to_buf_dir   = true,
               auto_close          = false,
               open_on_tab         = false,
               hijack_cursor       = false,

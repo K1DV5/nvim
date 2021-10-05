@@ -56,6 +56,8 @@
         set mouse=a
         " titlebar
         set title titlestring=%t
+        " foldtext
+        set foldtext=MyFoldText()
 
         "}}}
     "performance {{{
@@ -324,6 +326,22 @@
     endfunction
 
     " }}}
+    function! MyFoldText() "{{{
+        let indentation = indent(v:foldstart) - 1
+        " let foldSize = 1 + v:foldend - v:foldstart
+        " let foldSizeStr = " x" . foldSize
+        let line = getline(v:foldstart)
+        if len(line) > 80
+            let line = line[:77] . '...'
+        endif
+        let line = substitute(line, '^\s*\|{', '', 'g')
+        let foldLevelStr = '[+] ' . line
+        let expansionString = repeat(" ", indentation)
+        return expansionString . foldLevelStr ". foldSizeStr
+    endfunction
+    
+    "}}}
+
 " }}}
 " pack config {{{
     "term {{{

@@ -326,13 +326,6 @@
     " }}}
 " }}}
 " pack config {{{
-    "tabs {{{
-        " tabs that are not normal buffers
-        let g:tabs_custom_stl = {'gina-status': '%f', 'undo': '', 'vista': '', 'gina-commit': ''}
-        " show branch if a repo
-        let g:tabs_statusline_add = '%{!empty(gina#component#repo#name()) ? " ".gina#component#repo#branch() : ""}'
-
-        " }}}
     "term {{{
         " set default shell to powershell
         let g:term_default_shell = 'powershell'

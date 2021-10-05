@@ -35,49 +35,20 @@ function get_icon()
 end
 EOF
 
-function! StatusLine(bufnr)
-    " this is what is set in the autocmds
-    let tabs_section = TabsGetBufsText(a:bufnr)  " tabs
-    if a:bufnr == bufnr()
-        let current = 1
-        let hi_stat = '%#Tabs_Status#'
-        let start = hi_stat . ' %{toupper(mode())} '  " mode
-    else
-        let current = 0
-        let hi_stat = '%#Tabs_Status_NC#'
-        let start = hi_stat . ' %{win_getid() == ' . s:get_alt_win(winnr()) . ' ? "#" : winnr()} '
-    endif
-    let ft = getbufvar(a:bufnr, '&filetype')
-    if exists('g:tabs_custom_stl') && has_key(g:tabs_custom_stl, ft)  " custom buffer
-        let custom = substitute(g:tabs_custom_stl[ft], ':tabs\>', tabs_section, '')
-        return start . '%{&filetype} %#Tabs_Label_NC# ' . custom " filetype and custom
-    endif
-    let bt = getbufvar(a:bufnr, '&buftype')
-    if len(bt) && bt != 'terminal'
-        let begin = current ? hi_stat : start
-        return begin . ' ' . toupper(bt) . ' ' . tabs_section . hi_stat  " buftype and tabs
-    endif
-    let text = start . tabs_section  " win and tabs
-    let text .= hi_stat . '%= ' " custom highlighting and right align
-    if bt == 'terminal'
-        return text . toupper(bt) . ' '
-    endif
-    return text . get(g:, 'tabs_statusline_add', '') . ' '  " with additional from user
-endfunction
-
-function! TabsGetBufsText(bufnr)
+function! TabsStatusText()
     " get the section of the tabs
-    let win = bufwinid(a:bufnr)
-    let bufs = getwinvar(win, 'tabs_buflist', [a:bufnr])
-    let text = '%<%#Tabs_Label_NC#'
+    let bufnr = bufnr()
+    let win = bufwinid(bufnr)
+    let bufs = getwinvar(win, 'tabs_buflist', [bufnr])
+    let text = '%<%#StatuslineNC#'
     let i_buf = 1
     let is_current_win = win_getid() == win
-    let i_this = index(bufs, a:bufnr)
+    let i_this = index(bufs, bufnr)
     let alt = s:get_alt_buf(win)  " alternate buffer for the current win
     for buf in bufs
         let name = bufname(buf)
         let name = len(name) ? fnamemodify(name, ':t') : '[No name]'
-        if buf == a:bufnr  " current buf
+        if buf == bufnr  " current buf
             if is_current_win
                 let [icon, hl_icon] = v:lua.get_icon()
                 let hl_icon = '%#' . hl_icon . '#'
@@ -85,7 +56,7 @@ function! TabsGetBufsText(bufnr)
             else
                 let icon = '%#Normal# %{v:lua.get_icon()[0]} '
             endif
-            let text .= icon . '%#Normal#' . name . '%m %#Tabs_Label_NC#'
+            let text .= icon . '%#Normal#' . name . '%m %#StatuslineNC#'
         else
             let num = is_current_win ? (buf == alt ? '# ' : i_buf . ':') : ''
             let text .= ' ' . num . name . ' '
@@ -227,69 +198,9 @@ function! TabsClose()
     endif
 endfunction
 
-" add the filetype and fileformat to the <c-g>
-noremap <c-g> <cmd>file <bar> echon '  ft:'.&filetype '  eol:'.&fileformat<cr>
-
-" highlightings used
-let s:ft_hl = [
-    \ ['vim', 'green'],
-    \ ['go', '#29BEB0'],
-    \ ['jade', 'green'],
-    \ ['ini', 'yellow'],
-    \ ['md', 'blue'],
-    \ ['yaml', 'yellow'],
-    \ ['config', 'yellow'],
-    \ ['conf', 'yellow'],
-    \ ['json', 'yellow'],
-    \ ['html', 'orange'],
-    \ ['styl', 'cyan'],
-    \ ['css', 'cyan'],
-    \ ['coffee', 'Red'],
-    \ ['js', '#F7DF1E'],
-    \ ['javascript', '#F7DF1E'],
-    \ ['javascriptreact', '#00D8FF'],
-    \ ['php', 'Magenta'],
-    \ ['python', '#4584B6'],
-    \ ['ds_store', 'Gray'],
-    \ ['gitconfig', 'Gray'],
-    \ ['gitignore', 'Gray'],
-    \ ['bashrc', 'Gray'],
-    \ ['bashprofile', 'Gray',]]
-
-function s:define_hl()
-    hi link Tabs_Label TabLineSel
-    hi link Tabs_Label_NC StatusLineNC
-    hi Tabs_Status guifg=white guibg=#0A7ACA
-    hi link Tabs_Status_NC StatusLine
-    hi Tabs_Error guifg=black guibg=red
-    hi Tabs_Warning guifg=black guibg=yellow
-    let norm_bg = synIDattr(hlID('Normal'), 'bg')
-
-    for hl in s:ft_hl
-        execute 'hi TabsFt_' . hl[0] 'guifg=' . hl[1] 'guibg=' . norm_bg
-    endfor
-endfunction
-
-function! s:on_new() abort
-    if get(b:, 'tabs_status_set', 0)
-        " already set
-        return
-    endif
-    let b:tabs_status_set = 1
-    execute 'setlocal statusline=%!StatusLine(' . bufnr() .')'
-    call TabsReload()
-    let alt = bufnr('#')
-    if index(w:tabs_buflist, alt) != -1  " for when closing just after opening
-        let w:tabs_alt_file = alt
-    endif
-endfunction
-
 augroup Tabs
     autocmd!
-    autocmd BufRead,BufNewFile,FileType,TermOpen * call s:on_new()
     " save the current window number before jumping to jump back, redrawing
     " the statusline to show which is the alt
-    autocmd WinLeave * let g:tabs_alt_win = win_getid() " | if len(nvim_list_wins()) > 2 | redraws! | endif
-    " define highlightings
-    autocmd VimEnter * call s:define_hl()
+    autocmd WinLeave * let g:tabs_alt_win = win_getid()
 augroup END

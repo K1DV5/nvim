@@ -8,6 +8,9 @@ end
 
 -- setup packages only if they exist, to not prevent loading other parts
 local function setup(name, config, setup_func)
+    if config == nil then
+        config = {}
+    end
     if setup_func == nil then
         setup_func = 'setup'
     end
@@ -28,44 +31,46 @@ require "paq" {
 
     "neovim/nvim-lspconfig"; -- config in lsp.lua
 
-    "hrsh7th/nvim-cmp"; -- {{{
-        (function()
-            local cmp = require'cmp'
-            local luasnip = require'luasnip'
-            cmp.setup{
-                formatting = {
-                    format = function(entry, vim_item)
-                        return vim_item
-                    end,
-                },
-                mapping = {
-                    ['<CR>'] = cmp.mapping.confirm({
-                        behavior = cmp.ConfirmBehavior.Insert,
-                        select = true,
-                    })
-                },
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end
-                },
-                sources = { -- You should specify your *installed* sources.
-                  {name = 'nvim_lsp'},
-                  {name = 'luasnip'},
-                  {name = 'buffer'},
-                },
-            }
-            -- require("nvim-autopairs.completion.cmp").setup({
-            --   map_cr = true, --  map <CR> on insert mode
-            --   map_complete = true, -- it will auto insert `(` after select function or method item
-            -- })
-        end)(); -- }}}
+    "hrsh7th/nvim-cmp";
+    (function()
+        local cmp = require'cmp'
+        local luasnip = require'luasnip'
+        cmp.setup{
+            formatting = {
+                format = function(entry, vim_item)
+                    return vim_item
+                end,
+            },
+            mapping = {
+                ['<CR>'] = cmp.mapping.confirm({
+                    behavior = cmp.ConfirmBehavior.Insert,
+                    select = true,
+                })
+            },
+            snippet = {
+                expand = function(args)
+                    luasnip.lsp_expand(args.body)
+                end
+            },
+            sources = { -- You should specify your *installed* sources.
+              {name = 'nvim_lsp'},
+              {name = 'luasnip'},
+              {name = 'buffer'},
+            },
+        }
+        -- require("nvim-autopairs.completion.cmp").setup({
+        --   map_cr = true, --  map <CR> on insert mode
+        --   map_complete = true, -- it will auto insert `(` after select function or method item
+        -- })
+    end)();
+
     "hrsh7th/cmp-buffer";
     "hrsh7th/cmp-nvim-lsp";
 
-    "windwp/nvim-autopairs"; -- {{{
-        setup('nvim-autopairs', {}); -- }}}
-    "nvim-treesitter/nvim-treesitter"; -- {{{
+    "windwp/nvim-autopairs";
+    setup('nvim-autopairs');
+
+    "nvim-treesitter/nvim-treesitter";
         setup('nvim-treesitter.configs', {
             highlight = {
                 enable = true,
@@ -79,85 +84,63 @@ require "paq" {
             context_commentstring = {
                 enable = true
             }
-        }); -- }}}
-    "blackCauldron7/surround.nvim"; -- {{{
-        setup('surround', {
-            mappings_style = "surround"
         });
-        -- }}}
-    "kyazdani42/nvim-tree.lua"; -- {{{
+
+    "blackCauldron7/surround.nvim";
+    setup('surround', {
+        mappings_style = "surround"
+    });
+
+    "kyazdani42/nvim-tree.lua";
         setup('nvim-tree', {
               (function()
                   vim.g.nvim_tree_window_picker_exclude = {filetype = {"packer", "qf", "Outline"}}
                   vim.g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1, folder_arrows = 1}
               end)(),
-              disable_netrw       = true,
-              hijack_netrw        = true,
-              open_on_setup       = false,
-              ignore_ft_on_setup  = {},
-              -- update_to_buf_dir   = true,
-              auto_close          = false,
-              open_on_tab         = false,
-              hijack_cursor       = false,
-              update_cwd          = false,
               lsp_diagnostics     = true,
-              update_focused_file = {
-                  enable      = false,
-                  update_cwd  = false,
-                  ignore_list = {}
-              },
-              system_open = {
-                  cmd  = nil,
-                  args = {}
-              },
-              view = {
-                  width = 30,
-                  side = 'left',
-                  auto_resize = false,
-                  mappings = {
-                      custom_only = false,
-                      list = {}
-                  }
-              }
-        }); -- }}}
+        });
+
     "kyazdani42/nvim-web-devicons";  -- pretty icons, for nvim-tree
+
     -- diagnostics window
-    "folke/trouble.nvim"; -- {{{
-        setup('trouble', {});
-        -- }}}
-    -- pretty icons on lsp completion items
+    "folke/trouble.nvim";
+    setup('trouble');
+
     "ggandor/lightspeed.nvim";  -- move fast in nvim
+
     "JoosepAlviste/nvim-ts-context-commentstring";
-    "terrortylor/nvim-comment";  -- {{{
+
+    "terrortylor/nvim-comment";
         setup('nvim_comment', {
             comment_empty = false
-        }); -- }}}
-    -- vscode's dark+ theme
-    "Mofiqul/vscode.nvim";  -- {{{
+        });
+
+    "Mofiqul/vscode.nvim"; -- vscode's dark+ theme
         (function()
             if vim.g.vscode_style == nil then
                 vim.g.vscode_style = "dark"
                 vim.cmd[[colorscheme vscode]]
             end
         end)();
-    -- }}}
+
     "L3MON4D3/LuaSnip";
     "saadparwaiz1/cmp_luasnip";
-    "simrat39/symbols-outline.nvim"; -- {{{
+
+    "simrat39/symbols-outline.nvim";
         (function()
             vim.g.symbols_outline = {
                 symbol_blacklist = {'Variable', 'Constant'},
             }
         end)();
-    -- }}}
-    "jakewvincent/mkdnflow.nvim";  -- {{{
-        setup('mkdnflow', {});
-    -- }}}
+
+    "jakewvincent/mkdnflow.nvim";
+    setup('mkdnflow');
+
     {"camspiers/snap", run =
      'curl https://raw.githubusercontent.com/swarn/fzy-lua/main/src/fzy_lua.lua -o '
      .. fn.stdpath('config')
      ..  '/lua/fzy.lua'
-     }; -- {{{
+     };
         (function()
             local snap = require'snap'
             snap.maps{
@@ -167,9 +150,37 @@ require "paq" {
                 -- {"<Leader>ff", snap.config.vimgrep {consumer = "fzy"}},
             }
         end
-        )(); -- }}}
+        )();
 
-    -- look for alternatives
+    "hoob3rt/lualine.nvim";
+    setup('lualine', {
+        options = {
+            theme = 'codedark',
+            section_separators = {'', ''},
+            component_separators = {'', ''},
+            disabled_filetypes = {'Outline', 'NvimTree'},
+        },
+        sections = {
+            lualine_a = {'mode'},
+            lualine_b = {vim.fn.TabsStatusText},
+            lualine_x = {'fileformat'},
+            lualine_y = {
+                'progress',
+                {
+                    'diagnostics',
+                    symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '},
+                    -- all colors are in format #rrggbb
+                    sources = {'nvim_lsp'}
+                },
+            },
+            lualine_z = {'branch'},
+        },
+        inactive_sections = {
+            lualine_b = {vim.fn.TabsStatusText},
+        },
+    });
+
+    -- look for alternatives in lua
     "mattn/emmet-vim";
     "mbbill/undotree";
     "mhinz/vim-signify";

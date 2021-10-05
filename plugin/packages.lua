@@ -83,7 +83,8 @@ require "paq" {
             },
             context_commentstring = {
                 enable = true
-            }
+            },
+            vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
         });
 
     "blackCauldron7/surround.nvim";

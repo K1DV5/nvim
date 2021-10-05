@@ -313,14 +313,14 @@
         hi! default link Title Boolean
         hi! default link VimwikiMarkers Boolean
         hi! default link VimwikiLink markdownUrl
-        hi! DiagnosticSignInformation guifg=Green
+        hi! DiagnosticSignInfo guifg=Green
         hi! DiagnosticSignHint guifg=Cyan
         hi! DiagnosticSignError guifg=Red
-        hi! DiagnosticSignWarning guifg=Yellow
+        hi! DiagnosticSignWarn guifg=Yellow
         hi! DiagnosticUnderlineError gui=undercurl guisp=Red
-        hi! DiagnosticUnderlineWarning gui=undercurl guisp=Orange
+        hi! DiagnosticUnderlineWarn gui=undercurl guisp=Yellow
         hi! DiagnosticUnderlineHint gui=undercurl guisp=Cyan
-        hi! DiagnosticUnderlineInformation gui=undercurl guisp=Green
+        hi! DiagnosticUnderlineInfo gui=undercurl guisp=Green
     endfunction
 
     " }}}

@@ -163,6 +163,7 @@ require "paq" {
         sections = {
             lualine_a = {'mode'},
             lualine_b = {vim.fn.TabsStatusText},
+            lualine_c = {},
             lualine_x = {'fileformat'},
             lualine_y = {
                 'progress',
@@ -170,13 +171,22 @@ require "paq" {
                     'diagnostics',
                     symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '},
                     -- all colors are in format #rrggbb
-                    sources = {'nvim_lsp'}
+                    sources = {'nvim_lsp'},
+                    color_error = 'red', -- changes diagnostic's error foreground color
+                    color_warn = 'yellow', -- changes diagnostic's warn foreground color
+                    color_info = 'green', -- Changes diagnostic's info foreground color
+                    color_hint = 'cyan', -- Changes diagnostic's hint foreground color
                 },
             },
             lualine_z = {'branch'},
         },
         inactive_sections = {
+            lualine_a = {},
             lualine_b = {vim.fn.TabsStatusText},
+            lualine_c = {},
+            lualine_x = {},
+            lualine_y = {},
+            lualine_z = {},
         },
     });
 

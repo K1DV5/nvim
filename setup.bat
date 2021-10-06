@@ -1,1 +1,1 @@
-mklink /D %userprofile%\AppData\Local\nvim %cd%
+mklink /D "%userprofile%\AppData\Local\nvim" "%cd%"

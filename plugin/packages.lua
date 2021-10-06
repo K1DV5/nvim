@@ -10,6 +10,9 @@ end
 local function setup(name, config, setup_func)
     if config == nil then
         config = {}
+    elseif type(config) == 'function' then
+        pcall(config)
+        return
     end
     if setup_func == nil then
         setup_func = 'setup'
@@ -32,7 +35,7 @@ require "paq" {
     "neovim/nvim-lspconfig"; -- config in lsp.lua
 
     "hrsh7th/nvim-cmp";
-    (function()
+    setup('cmp', function()
         local cmp = require'cmp'
         local luasnip = require'luasnip'
         cmp.setup{
@@ -62,7 +65,7 @@ require "paq" {
         --   map_cr = true, --  map <CR> on insert mode
         --   map_complete = true, -- it will auto insert `(` after select function or method item
         -- })
-    end)();
+    end);
 
     "hrsh7th/cmp-buffer";
     "hrsh7th/cmp-nvim-lsp";
@@ -84,7 +87,7 @@ require "paq" {
             context_commentstring = {
                 enable = true
             },
-            vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr()')
+            vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
         });
 
     "blackCauldron7/surround.nvim";
@@ -93,13 +96,13 @@ require "paq" {
     });
 
     "kyazdani42/nvim-tree.lua";
-        setup('nvim-tree', {
-              (function()
-                  vim.g.nvim_tree_window_picker_exclude = {filetype = {"packer", "qf", "Outline"}}
-                  vim.g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1, folder_arrows = 1}
-              end)(),
-              lsp_diagnostics     = true,
-        });
+        setup('nvim-tree', function()
+              vim.g.nvim_tree_window_picker_exclude = {filetype = {"packer", "qf", "Outline"}}
+              vim.g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1, folder_arrows = 1}
+              require'nvim-tree'.setup{
+                  lsp_diagnostics     = true,
+              }
+          end);
 
     "kyazdani42/nvim-web-devicons";  -- pretty icons, for nvim-tree
 
@@ -117,22 +120,22 @@ require "paq" {
         });
 
     "Mofiqul/vscode.nvim"; -- vscode's dark+ theme
-        (function()
+        setup('vscode', function()
             if vim.g.vscode_style == nil then
                 vim.g.vscode_style = "dark"
                 vim.cmd[[colorscheme vscode]]
             end
-        end)();
+        end);
 
     "L3MON4D3/LuaSnip";
     "saadparwaiz1/cmp_luasnip";
 
     "simrat39/symbols-outline.nvim";
-        (function()
+        setup('symbols_outline', function()
             vim.g.symbols_outline = {
                 symbol_blacklist = {'Variable', 'Constant'},
             }
-        end)();
+        end);
 
     "jakewvincent/mkdnflow.nvim";
     setup('mkdnflow');
@@ -142,7 +145,7 @@ require "paq" {
      .. fn.stdpath('config')
      ..  '/lua/fzy.lua'
      };
-        (function()
+        setup('snap', function()
             local snap = require'snap'
             snap.maps{
                 {"-", snap.config.file {producer = "ripgrep.file", consumer = "fzy"}},
@@ -151,7 +154,7 @@ require "paq" {
                 -- {"<Leader>ff", snap.config.vimgrep {consumer = "fzy"}},
             }
         end
-        )();
+        );
 
     "hoob3rt/lualine.nvim";
     setup('lualine', {

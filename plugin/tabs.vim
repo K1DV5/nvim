@@ -200,6 +200,7 @@ endfunction
 
 augroup Tabs
     autocmd!
+    autocmd BufRead,BufNewFile,FileType,TermOpen * call TabsReload()
     " save the current window number before jumping to jump back, redrawing
     " the statusline to show which is the alt
     autocmd WinLeave * let g:tabs_alt_win = win_getid()

@@ -183,7 +183,7 @@
             let file = a:1
             let save = a:2
         endif
-        let file = fnameescape(empty(file) ? stdpath('config') . '/Session' : file) . '.vim'
+        let file = (empty(file) ? substitute(stdpath('config'), '\\', '/', 'g') . '/Session' : file) . '.vim'
         if save " save session
             execute 'mksession!' file
             return

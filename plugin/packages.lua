@@ -11,7 +11,10 @@ local function setup(name, config, setup_func)
     if config == nil then
         config = {}
     elseif type(config) == 'function' then
-        pcall(config)
+        local success = pcall(config)
+        if not success then
+            print('package', name, 'setup error')
+        end
         return
     end
     if setup_func == nil then
@@ -140,11 +143,12 @@ require "paq" {
     "jakewvincent/mkdnflow.nvim";
     setup('mkdnflow');
 
-    {"camspiers/snap", run =
-     'curl https://raw.githubusercontent.com/swarn/fzy-lua/main/src/fzy_lua.lua -o '
-     .. fn.stdpath('config')
-     ..  '/lua/fzy.lua'
-     };
+    "camspiers/snap";
+    -- {"camspiers/snap", run =
+    --  'curl https://raw.githubusercontent.com/swarn/fzy-lua/main/src/fzy_lua.lua -o '
+    --  .. fn.stdpath('config')
+    --  ..  '/lua/fzy.lua'
+    --  };
         setup('snap', function()
             local snap = require'snap'
             snap.maps{
@@ -153,8 +157,7 @@ require "paq" {
                 -- {"<Leader>fo", snap.config.file {producer = "vim.oldfile", consumer = "fzy"}},
                 -- {"<Leader>ff", snap.config.vimgrep {consumer = "fzy"}},
             }
-        end
-        );
+        end);
 
     "hoob3rt/lualine.nvim";
     setup('lualine', {

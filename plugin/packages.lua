@@ -95,7 +95,9 @@ require "paq" {
     "hrsh7th/cmp-nvim-lsp";
 
     "windwp/nvim-autopairs";
-    setup('nvim-autopairs');
+    setup('nvim-autopairs', {
+        check_ts = true,
+    });
 
     "nvim-treesitter/nvim-treesitter";
         setup('nvim-treesitter.configs', {

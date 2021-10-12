@@ -41,6 +41,25 @@ require "paq" {
     setup('cmp', function()
         local cmp = require'cmp'
         local luasnip = require'luasnip'
+        local function complete(direction)
+            local key
+            if direction == 1 then key = 'select_next_item'
+            else key = 'select_prev_item' end
+            return function(fallback)
+                if cmp.visible() then
+                    cmp.mapping[key]()()
+                    return
+                end
+                local col = vim.fn.col '.' - 1
+                local not_needed = col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
+                if not_needed then
+                    fallback()
+                    return
+                end
+                cmp.mapping.complete()
+            end
+        end
+
         cmp.setup{
             formatting = {
                 format = function(entry, vim_item)
@@ -51,7 +70,9 @@ require "paq" {
                 ['<CR>'] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Insert,
                     select = true,
-                })
+                }),
+                ['<Tab>'] = complete(1),
+                ['<S-Tab>'] = complete(-1),
             },
             snippet = {
                 expand = function(args)
@@ -103,7 +124,15 @@ require "paq" {
               vim.g.nvim_tree_window_picker_exclude = {filetype = {"packer", "qf", "Outline"}}
               vim.g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1, folder_arrows = 1}
               require'nvim-tree'.setup{
-                  lsp_diagnostics     = true,
+                  diagnostics = {
+                    enable = true,
+                    icons = {
+                      hint = "",
+                      info = "",
+                      warning = "",
+                      error = "",
+                    }
+                  },
               }
           end);
 
@@ -196,6 +225,8 @@ require "paq" {
             lualine_z = {},
         },
     });
+    "nvim-lua/plenary.nvim"; -- for neogit
+    "TimUntersberger/neogit";
 
     -- look for alternatives in lua
     "mattn/emmet-vim";

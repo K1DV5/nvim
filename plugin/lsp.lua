@@ -97,35 +97,7 @@ end
 
 -------------------- SETUP ------------------------
 
--- completion
-local keys = {
-    nxt = '\14',  -- <c-n>
-    prev = '\16',  -- <c-p>
-    omni = '\24\15',  -- <c-x><c-o>
-    default = '\t'  -- <tab>, default key for mapping
-}
-
-local function check_back_space()
-  local col = vim.fn.col '.' - 1
-  return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
-end
-
-local cmp = require'cmp'
-function complete(direction)
-    if vim.fn.pumvisible() == 0 then
-        if check_back_space() then return keys.default
-        else cmp.mapping.complete() end
-    end
-    if direction == 1 then return keys.nxt
-    elseif direction == -1 then return keys.prev end
-end
-
--- completion
 local map_opts = {noremap=true, silent=true}
-local imap_opts = vim.tbl_extend('keep', map_opts, {expr = true})
-vim.api.nvim_set_keymap('i', '<tab>', 'v:lua.complete(1)', imap_opts)
-vim.api.nvim_set_keymap('i', '<s-tab>', 'v:lua.complete(-1)', imap_opts)
-vim.api.nvim_set_keymap('s', '<tab>', 'v:lua.complete(1)', imap_opts)
 
 -- range formatting
 function format_range_operator()

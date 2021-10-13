@@ -212,15 +212,15 @@
                 call TabsAllBuffers()
             endif
         else
-            if !g:init_argc
-                call S('', 1)
-            endif
             " delete terminal buffers
             for buf in nvim_list_bufs()
                 if nvim_buf_get_option(buf, 'buftype') == 'terminal'
                     execute 'bwipeout!' buf
                 endif
             endfor
+            if !g:init_argc
+                call S('', 1)
+            endif
             xall!
         endif
     endfunction

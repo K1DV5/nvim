@@ -230,12 +230,12 @@
     " }}}
     function! s:git() "{{{
         " show git status
-        if index(['gina-log', 'gina-status'], &filetype) != -1
+        if index(['NeogitStatus'], &filetype) != -1
             let l:to_be_closed = bufnr()
             call win_gotoid(1000)
             execute 'bdelete' l:to_be_closed
         elseif &modifiable
-            Gina status -s --opener=10sp --group=git
+            lua require'neogit'.open{cwd = vim.fn.expand('%:h'), kind = 'split_above'}
         else
             echo 'Must be on a file'
         endif
@@ -374,18 +374,12 @@ augroup init "{{{
     autocmd VimEnter * nested call s:gate('in') | call s:highlight()
     " use emmet for html
     autocmd FileType html,php,svelte inoremap <c-space> <cmd>call emmet#expandAbbr(0, "")<cr><right>
-    " reset tab for vimwiki
-    autocmd FileType vimwiki nnoremap <buffer> <tab> <cmd>call TabsGo(v:count)<cr>
-    " gc: edit commit message, gp: push, <cr>: commit
-    autocmd FileType gina-status noremap <buffer> gc <cmd>Gina commit --group=git<cr> | noremap <buffer> gp <cmd>Gina push<cr>
-    autocmd FileType gina-commit inoremap <buffer> <cr> <esc><cmd>wq<cr>
     " close tags window when help opens
     autocmd BufWinEnter *.txt if &buftype == 'help'
         \| wincmd L
         \| vertical resize 83
         \| silent! execute 'SymbolsOutlineClose'
         \| endif
-    autocmd DirChanged * call S('Session', 0)
     " turn on spelling for prose filetypes
     autocmd FileType markdown,tex setlocal spell
     " source configs on save

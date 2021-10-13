@@ -97,35 +97,7 @@ end
 
 -------------------- SETUP ------------------------
 
--- completion
-local keys = {
-    nxt = '\14',  -- <c-n>
-    prev = '\16',  -- <c-p>
-    omni = '\24\15',  -- <c-x><c-o>
-    default = '\t'  -- <tab>, default key for mapping
-}
-
-local function check_back_space()
-  local col = vim.fn.col '.' - 1
-  return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
-end
-
-local cmp = require'cmp'
-function complete(direction)
-    if vim.fn.pumvisible() == 0 then
-        if check_back_space() then return keys.default
-        else cmp.mapping.complete() end
-    end
-    if direction == 1 then return keys.nxt
-    elseif direction == -1 then return keys.prev end
-end
-
--- completion
 local map_opts = {noremap=true, silent=true}
-local imap_opts = vim.tbl_extend('keep', map_opts, {expr = true})
-vim.api.nvim_set_keymap('i', '<tab>', 'v:lua.complete(1)', imap_opts)
-vim.api.nvim_set_keymap('i', '<s-tab>', 'v:lua.complete(-1)', imap_opts)
-vim.api.nvim_set_keymap('s', '<tab>', 'v:lua.complete(1)', imap_opts)
 
 -- range formatting
 function format_range_operator()
@@ -175,27 +147,14 @@ local function on_attach(client, bufnr)
     map(bufnr, 'n', 'gq',        '<cmd>lua format_range_operator()<cr>',       map_opts)
 end
 
--- enable snippets support on client
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = {valueSet = {1}}
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {'documentation', 'detail', 'additionalTextEdits'}
-}
--- better experience for completions
-vim.o.completeopt = 'menuone,noselect'
-
 -- change diagnostic signs shown in sign column
 vim.fn.sign_define("DiagnosticSignError", {text = '', texthl = "DiagnosticSignError"})
 vim.fn.sign_define("DiagnosticSignWarn", {text = '', texthl = "DiagnosticSignWarn"})
 vim.fn.sign_define("DiagnosticSignInfo", {text = '', texthl = "DiagnosticSignInfo"})
 vim.fn.sign_define("DiagnosticSignHint", {text = '', texthl = "DiagnosticSignHint"})
+
+-- enable snippets support on client
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- setup language servers
 local servers = {

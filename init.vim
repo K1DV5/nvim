@@ -166,25 +166,10 @@
         "}}}
 " }}}
 " functions {{{
-    function! S(...) "{{{
+    function! S(save) "{{{
         " session management
-        if a:0 == 0
-            let file = 'Session'
-            let save = 1
-        elseif a:0 == 1
-            if type(a:1) == v:t_string
-                let file = a:1
-                let save = 1
-            else  " number
-                let file = 'Session'
-                let save = a:1
-            endif
-        else
-            let file = a:1
-            let save = a:2
-        endif
-        let file = (empty(file) ? substitute(stdpath('config'), '\\', '/', 'g') . '/Session' : file) . '.vim'
-        if save " save session
+        let file = substitute(stdpath('config'), '\\', '/', 'g') . '/Session.vim'
+        if a:save " save session
             execute 'mksession!' file
             return
         endif
@@ -208,7 +193,7 @@
             if argc()
                 execute 'cd' expand('%:p:h')
             else
-                call S('', 0)
+                call S(v:false)
                 call TabsAllBuffers()
             endif
         else
@@ -219,7 +204,7 @@
                 endif
             endfor
             if !g:init_argc
-                call S('', 1)
+                call S(v:true)
             endif
             xall!
         endif

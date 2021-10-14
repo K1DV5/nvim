@@ -384,6 +384,9 @@ augroup init "{{{
     autocmd FileType markdown,tex setlocal spell
     " source configs on save
     autocmd BufWritePost *.vim,*.lua source %
+    " toggle line number formats
+    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &number && mode() != "i" | set relativenumber | endif
+    autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * set norelativenumber
 augroup END
 " }}}
 

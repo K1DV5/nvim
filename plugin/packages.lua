@@ -113,6 +113,13 @@ require "paq" {
             context_commentstring = {
                 enable = true
             },
+            textsubjects = {
+                enable = true,
+                keymaps = {
+                    ['.'] = 'textsubjects-smart',
+                    [';'] = 'textsubjects-container-outer',
+                }
+            },
             vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
         });
 
@@ -227,6 +234,9 @@ require "paq" {
             lualine_z = {},
         },
     });
+
+    "RRethy/nvim-treesitter-textsubjects";
+
     "nvim-lua/plenary.nvim"; -- for neogit
     "TimUntersberger/neogit";
 

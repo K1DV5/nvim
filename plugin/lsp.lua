@@ -45,56 +45,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     }
 )
 
-
------------------- SIGNATURE PARAMS HELP ----------------------
----- to be used with completion
-
-local sig_buf = vim.api.nvim_create_buf(false, true)
-vim.api.nvim_buf_set_option(sig_buf, 'undolevels', -1)
-vim.api.nvim_buf_set_option(sig_buf, 'filetype', 'coco')
-local sig_win = 1
-local last_col = 0
-local last_row = -1
-
-function signature_help(show)
-    if not show then return floating_win(sig_win) end  -- close
-    local col = vim.api.nvim_win_get_cursor(0)[2]
-    local line_to_cursor = vim.api.nvim_get_current_line():sub(1, col)
-    local kw_start = string.find(line_to_cursor, '[a-zA-Z0-9_]+$')
-    local sig_col = 0  -- signature help column
-    if kw_start then
-        if col > last_col then return floating_win(sig_win) end  -- same signature, no change, close
-        sig_col = kw_start - #line_to_cursor - 1
-    elseif string.find(line_to_cursor, '[ \t]$') then
-        local opts = {relative = 'cursor', row = last_row, col = sig_col}
-        return floating_win(sig_win, sig_buf, nil, opts)  -- move
-    end
-    last_col = col
-    vim.lsp.buf_request(0, 'textDocument/signatureHelp', vim.lsp.util.make_position_params(), function(err, _, result)
-        if not result or not result.signatures or vim.tbl_isempty(result.signatures) or not result.activeSignature or not result.signatures[result.activeSignature + 1].parameters then
-            return floating_win(sig_win)  -- close
-        end
-        local sig = result.signatures[result.activeSignature + 1] 
-        local param = sig.parameters[(sig.activeParameter or result.activeParameter or 0) + 1]
-        if not param then return end
-        local text = param.label
-        if type(param.label) == 'table' then
-            text = sig.label:sub(param.label[1] + 1, param.label[2])
-        end
-        if param.documentation ~= nil and param.documentation ~= vim.NIL then
-            -- vim.api.nvim_set_var('DoC', vim.inspect(param.documentation))
-            if type(param.documentation) == 'table' then
-                param.documentation = param.documentation.value
-            end
-            text = text .. ': ' .. param.documentation
-        end
-        local lines = text:split("\n")
-        last_row = -#lines
-        local opts = vim.tbl_extend('force', floating_win_opts, {width = #text + 2, col = sig_col, row = last_row})
-        sig_win = floating_win(sig_win, sig_buf, lines, opts)
-    end)
-end
-
 -------------------- SETUP ------------------------
 
 local map_opts = {noremap=true, silent=true}
@@ -127,12 +77,6 @@ end
 local function on_attach(client, bufnr)
     -- diagnostics
     vim.api.nvim_command [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_position_diagnostics({focusable = false})]]
-    -- floating signature parameters help
-    if client.server_capabilities.signatureHelpProvider then
-        vim.api.nvim_command [[autocmd InsertEnter <buffer> lua signature_help(true)]]
-        vim.api.nvim_command [[autocmd InsertLeave <buffer> lua signature_help(false)]]
-        vim.api.nvim_command [[autocmd TextChangedI <buffer> lua signature_help(true)]]
-    end
     -- Mappings
     local map = vim.api.nvim_buf_set_keymap
     map(bufnr, 'n', '<c-]>',     '<cmd>lua vim.lsp.buf.declaration()<CR>',     map_opts)
@@ -162,7 +106,7 @@ local servers = {
         capabilities = capabilities,
         cmd = {"pyright-langserver.cmd", "--stdio"}
     },
-    texlab = {},
+    -- texlab = {},
     html = {
         cmd = {"vscode-html-language-server.cmd", "--stdio"},
         capabilities = capabilities

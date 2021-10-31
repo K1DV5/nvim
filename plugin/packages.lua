@@ -207,7 +207,7 @@ require "paq" {
         },
         sections = {
             lualine_a = {'mode'},
-            lualine_b = {vim.fn.TabsStatusText},
+            lualine_b = {'TabsStatusText'},
             lualine_c = {},
             lualine_x = {'fileformat'},
             lualine_y = {
@@ -227,7 +227,7 @@ require "paq" {
         },
         inactive_sections = {
             lualine_a = {},
-            lualine_b = {vim.fn.TabsStatusText},
+            lualine_b = {'TabsStatusText'},
             lualine_c = {},
             lualine_x = {},
             lualine_y = {},

@@ -216,11 +216,8 @@ require "paq" {
                     'diagnostics',
                     symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '},
                     -- all colors are in format #rrggbb
+                    diagnostics_color = {error = 'red', warn = 'yellow', info = 'green', hint = 'cyan'},
                     sources = {'nvim_lsp'},
-                    color_error = 'red', -- changes diagnostic's error foreground color
-                    color_warn = 'yellow', -- changes diagnostic's warn foreground color
-                    color_info = 'green', -- Changes diagnostic's info foreground color
-                    color_hint = 'cyan', -- Changes diagnostic's hint foreground color
                 },
             },
             lualine_z = {'branch'},

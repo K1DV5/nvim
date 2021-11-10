@@ -206,29 +206,7 @@ require "paq" {
             disabled_filetypes = {'Outline', 'NvimTree'},
         },
         sections = {
-            lualine_a = {'mode'},
-            lualine_b = {'TabsStatusText'},
-            lualine_c = {},
-            lualine_x = {'fileformat'},
-            lualine_y = {
-                'progress',
-                {
-                    'diagnostics',
-                    symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '},
-                    -- all colors are in format #rrggbb
-                    diagnostics_color = {error = 'red', warn = 'yellow', info = 'green', hint = 'cyan'},
-                    sources = {'nvim_lsp'},
-                },
-            },
-            lualine_z = {'branch'},
-        },
-        inactive_sections = {
-            lualine_a = {},
-            lualine_b = {'TabsStatusText'},
-            lualine_c = {},
-            lualine_x = {},
-            lualine_y = {},
-            lualine_z = {},
+            lualine_c = {"vim.fn.expand('%:.')"},
         },
     });
 

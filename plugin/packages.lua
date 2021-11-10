@@ -206,7 +206,7 @@ require "paq" {
             disabled_filetypes = {'Outline', 'NvimTree'},
         },
         sections = {
-            lualine_c = {"vim.fn.expand('%:.')"},
+            lualine_c = {"vim.fn.TabsStatusText()"},
         },
     });
 

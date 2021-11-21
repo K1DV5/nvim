@@ -171,12 +171,13 @@ require "paq" {
     "L3MON4D3/LuaSnip";
     "saadparwaiz1/cmp_luasnip";
 
-    "simrat39/symbols-outline.nvim";
-        setup('symbols_outline', function()
-            vim.g.symbols_outline = {
-                symbol_blacklist = {'Variable', 'Constant'},
-            }
-        end);
+    "liuchengxu/vista.vim";
+    -- "simrat39/symbols-outline.nvim";
+    --     setup('symbols_outline', function()
+    --         vim.g.symbols_outline = {
+    --             symbol_blacklist = {'Variable', 'Constant'},
+    --         }
+    --     end);
 
     "jakewvincent/mkdnflow.nvim";
     setup('mkdnflow');
@@ -239,7 +240,6 @@ require "paq" {
 
     -- look for alternatives in lua
     "mattn/emmet-vim";
-    "mbbill/undotree";
     "mhinz/vim-signify";
     "lambdalisue/gina.vim";
 }

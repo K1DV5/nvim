@@ -218,7 +218,6 @@ require "paq" {
 
     -- look for alternatives in lua
     "mattn/emmet-vim";
-    "mhinz/vim-signify";
     "lambdalisue/gina.vim";
 }
 

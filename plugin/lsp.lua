@@ -76,7 +76,7 @@ end
 -- setup func
 local function on_attach(client, bufnr)
     -- diagnostics
-    vim.api.nvim_command [[autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_position_diagnostics({focusable = false})]]
+    vim.api.nvim_command [[autocmd CursorHold <buffer> lua vim.diagnostic.open_float({focusable = false, scope = 'cursor'})]]
     -- Mappings
     local map = vim.api.nvim_buf_set_keymap
     map(bufnr, 'n', '<c-]>',     '<cmd>lua vim.lsp.buf.declaration()<CR>',     map_opts)

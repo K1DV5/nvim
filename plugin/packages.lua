@@ -213,8 +213,10 @@ require "paq" {
 
     "RRethy/nvim-treesitter-textsubjects";
 
-    "nvim-lua/plenary.nvim"; -- for neogit
+    "nvim-lua/plenary.nvim"; -- for neogit, gitsigns
     "TimUntersberger/neogit";
+    "lewis6991/gitsigns.nvim";
+    setup('gitsigns');
 
     -- look for alternatives in lua
     "mattn/emmet-vim";

@@ -207,6 +207,7 @@ require "paq" {
             disabled_filetypes = {'Outline', 'NvimTree'},
         },
         sections = {
+            lualine_a = {function() return vim.api.nvim_get_mode().mode:upper() end},
             lualine_b = {},
             lualine_c = {"vim.fn.TabsStatusText()"},
             lualine_x = {'branch', 'diff', 'diagnostics'},

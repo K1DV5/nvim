@@ -36,6 +36,7 @@ require "paq" {
     "savq/paq-nvim";                  -- Let Paq manage itself
 
     "neovim/nvim-lspconfig"; -- config in lsp.lua
+    "RRethy/vim-illuminate";
 
     "hrsh7th/nvim-cmp";
     setup('cmp', function()

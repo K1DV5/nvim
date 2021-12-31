@@ -73,6 +73,7 @@ function format_range_operator()
     vim.api.nvim_feedkeys('g@', 'n', false)
 end
 
+local illuminate = require'illuminate'
 -- setup func
 local function on_attach(client, bufnr)
     -- diagnostics
@@ -89,6 +90,9 @@ local function on_attach(client, bufnr)
     map(bufnr, 'n', '<f2>',      '<cmd>lua vim.lsp.buf.rename()<CR>',          map_opts)
     map(bufnr, 'n', 'ga',        '<cmd>lua vim.lsp.buf.code_action()<CR>',     map_opts)
     map(bufnr, 'n', 'gq',        '<cmd>lua format_range_operator()<cr>',       map_opts)
+    illuminate.on_attach(client)
+    vim.api.nvim_set_keymap('n', '<a-n>', '<cmd>lua require"illuminate".next_reference{wrap=true}<cr>', map_opts)
+    vim.api.nvim_set_keymap('n', '<a-p>', '<cmd>lua require"illuminate".next_reference{reverse=true,wrap=true}<cr>', map_opts)
 end
 
 -- change diagnostic signs shown in sign column

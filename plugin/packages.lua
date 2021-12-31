@@ -182,21 +182,10 @@ require "paq" {
     "jakewvincent/mkdnflow.nvim";
     setup('mkdnflow');
 
-    "camspiers/snap";
-    -- {"camspiers/snap", run =
-    --  'curl https://raw.githubusercontent.com/swarn/fzy-lua/main/src/fzy_lua.lua -o '
-    --  .. fn.stdpath('config')
-    --  ..  '/lua/fzy.lua'
-    --  };
-        setup('snap', function()
-            local snap = require'snap'
-            snap.maps{
-                {"-", snap.config.file {producer = "ripgrep.file", consumer = "fzy"}},
-                -- {"<Leader>fb", snap.config.file {producer = "vim.buffer", consumer = "fzy"}},
-                -- {"<Leader>fo", snap.config.file {producer = "vim.oldfile", consumer = "fzy"}},
-                -- {"<Leader>ff", snap.config.vimgrep {consumer = "fzy"}},
-            }
-        end);
+    "nvim-telescope/telescope.nvim";
+    setup('telescope', function()
+        vim.api.nvim_set_keymap('n', '-', '<cmd>Telescope find_files<CR>', {noremap = true, silent = true})
+    end);
 
     "hoob3rt/lualine.nvim";
     setup('lualine', {

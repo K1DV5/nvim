@@ -130,21 +130,19 @@ require "paq" {
     });
 
     "kyazdani42/nvim-tree.lua";
-        setup('nvim-tree', function()
-              vim.g.nvim_tree_window_picker_exclude = {filetype = {"packer", "qf", "Outline"}}
-              vim.g.nvim_tree_show_icons = {git = 0, folders = 1, files = 1, folder_arrows = 1}
-              require'nvim-tree'.setup{
-                  diagnostics = {
-                    enable = true,
-                    icons = {
-                      hint = "",
-                      info = "",
-                      warning = "",
-                      error = "",
-                    }
-                  },
-              }
-          end);
+        setup('nvim-tree', {
+            diagnostics = {
+                enable = true,
+                show_on_dirs = false,
+                icons = {hint = "", info = "", warning = "", error = ""}
+            },
+            git = {
+                enable = false,
+            },
+            update_focused_file = {
+                enable = true,
+            }
+        });
 
     "kyazdani42/nvim-web-devicons";  -- pretty icons, for nvim-tree
 
@@ -215,7 +213,6 @@ require "paq" {
 
     -- look for alternatives in lua
     "mattn/emmet-vim";
-    "lambdalisue/gina.vim";
 }
 
 -- vim:foldmethod=marker:foldlevel=0

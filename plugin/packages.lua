@@ -183,6 +183,14 @@ require "paq" {
 
     "nvim-telescope/telescope.nvim";
     setup('telescope', function()
+        require'telescope'.setup{
+            defaults = {
+                preview = false,
+                mappings = {
+                    i = {["<esc>"] = require("telescope.actions").close},
+                },
+            }
+        }
         vim.api.nvim_set_keymap('n', '-', '<cmd>Telescope find_files<CR>', {noremap = true, silent = true})
     end);
 

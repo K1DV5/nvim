@@ -159,8 +159,8 @@
         " use system clipboard
         noremap <leader>c "+
         " toggle file and tag (definition) trees
-        noremap <leader>d <cmd>call <sid>tree('SymbolsOutline', 'Outline')<cr>
-        noremap <leader>D <cmd>SymbolsOutlineClose<cr>
+        noremap <leader>d <cmd>call <sid>tree('Vista nvim_lsp', 'vista_kind')<cr>
+        noremap <leader>D <cmd>Vista!<cr>
         noremap <leader>f <cmd>call <sid>tree('NvimTreeOpen', 'NvimTree')<cr>
         noremap <leader>F <cmd>NvimTreeClose<cr>
         "}}}
@@ -235,7 +235,7 @@
             call win_gotoid(1000)
             execute 'bdelete' l:to_be_closed
         elseif &modifiable
-            lua require'neogit'.open{cwd = vim.fn.expand('%:h'), kind = 'split_above'}
+            lua require'neogit'.open{cwd = vim.fn.expand('%:h'), kind = 'vsplit'}
         else
             echo 'Must be on a file'
         endif

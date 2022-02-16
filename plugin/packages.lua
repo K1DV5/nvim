@@ -129,26 +129,7 @@ require "paq" {
         mappings_style = "surround"
     });
 
-    "kyazdani42/nvim-tree.lua";
-        setup('nvim-tree', {
-            diagnostics = {
-                enable = true,
-                show_on_dirs = false,
-                icons = {hint = "", info = "", warning = "", error = ""}
-            },
-            git = {
-                enable = false,
-            },
-            update_focused_file = {
-                enable = true,
-            }
-        });
-
     "kyazdani42/nvim-web-devicons";  -- pretty icons, for nvim-tree
-
-    -- diagnostics window
-    "folke/trouble.nvim";
-    setup('trouble');
 
     "ggandor/lightspeed.nvim";  -- move fast in nvim
 
@@ -206,7 +187,7 @@ require "paq" {
             lualine_a = {function() return vim.api.nvim_get_mode().mode:upper() end},
             lualine_b = {},
             lualine_c = {"vim.fn.TabsStatusText()"},
-            lualine_x = {'branch', 'diff', 'diagnostics'},
+            lualine_x = {'diagnostics'},
             lualine_y = {'fileformat', 'filetype'},
             lualine_z = {'progress'},
         },
@@ -216,8 +197,9 @@ require "paq" {
 
     "nvim-lua/plenary.nvim"; -- for neogit, gitsigns
     "TimUntersberger/neogit";
-    "lewis6991/gitsigns.nvim";
-    setup('gitsigns');
+    setup('neogit', {
+        auto_refresh = false,
+    });
 
     -- look for alternatives in lua
     "mattn/emmet-vim";

@@ -124,7 +124,7 @@ require "paq" {
             vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
         });
 
-    "blackCauldron7/surround.nvim";
+    "ur4ltz/surround.nvim";
     setup('surround', {
         mappings_style = "surround"
     });

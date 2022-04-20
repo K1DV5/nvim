@@ -134,6 +134,7 @@ local servers = {
         capabilities = capabilities,
     },
     gopls = {},
+    cssmodules_ls = {},
 }
 
 local lspconfig = require 'lspconfig'

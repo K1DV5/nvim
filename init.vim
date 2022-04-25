@@ -78,6 +78,14 @@
         let g:loaded_2html_plugin = 1
         let g:loaded_tarPlugin = 1
         "}}}
+
+    "gui {{{
+        " font
+        set guifont=CaskaydiaCove\ Nerd\ Font:h12
+        " fullscreen
+        let g:neovide_fullscreen=v:true
+    " }}}
+
 " }}}
 " mappings {{{
     "normal {{{

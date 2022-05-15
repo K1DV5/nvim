@@ -121,6 +121,9 @@ require "paq" {
                     [';'] = 'textsubjects-container-outer',
                 }
             },
+            indent = {
+                enable = true
+            },
             vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
         });
 

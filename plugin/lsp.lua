@@ -106,22 +106,11 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protoco
 
 -- setup language servers
 local servers = {
-    pyright = {
-        capabilities = capabilities,
-        cmd = {"pyright-langserver.cmd", "--stdio"}
-    },
+    pyright = {},
     -- texlab = {},
-    html = {
-        cmd = {"vscode-html-language-server.cmd", "--stdio"},
-        capabilities = capabilities
-    },
-    cssls = {
-        cmd = {"vscode-css-language-server.cmd", "--stdio"},
-        capabilities = capabilities
-    },
+    html = {},
+    cssls = {},
     jsonls = {
-        capabilities = capabilities,
-        cmd = {"vscode-json-language-server.cmd", "--stdio"},
         commands = {
             Format = {
                 function()
@@ -131,7 +120,7 @@ local servers = {
         }
     },
     tsserver = {
-        capabilities = capabilities,
+        -- cmd = {"typescript-language-server.cmd", "--stdio", "-p", "A:/sheger-vmis/front"}
     },
     gopls = {},
     cssmodules_ls = {},
@@ -140,6 +129,7 @@ local servers = {
 local lspconfig = require 'lspconfig'
 for name, opts in pairs(servers) do
     lspconfig[name].setup(vim.tbl_extend('keep', opts, {
+        capabilities = capabilities,
         on_attach = on_attach,
         flags = {
             debounce_text_changes = 150

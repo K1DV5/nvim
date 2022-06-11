@@ -119,11 +119,8 @@ local servers = {
             }
         }
     },
-    tsserver = {
-        -- cmd = {"typescript-language-server.cmd", "--stdio", "-p", "A:/sheger-vmis/front"}
-    },
+    tsserver = {},
     gopls = {},
-    cssmodules_ls = {},
 }
 
 local lspconfig = require 'lspconfig'

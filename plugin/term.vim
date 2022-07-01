@@ -119,7 +119,6 @@ function! Term(cmd, ...)
     endif
     tnoremap <buffer> <cr> <cmd>call timer_start(500, 'RenameTerm')<cr><cr>
     tnoremap <buffer> <c-c> <cmd>call timer_start(500, 'RenameTerm')<cr><c-c>
-    autocmd BufEnter <buffer> norm G
 	" if the cmd has argumets, delete existing with the same cmd
     if cmd =~ '\s'
         for buf in l:tbuflist

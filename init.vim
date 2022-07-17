@@ -78,14 +78,7 @@
         let g:loaded_2html_plugin = 1
         let g:loaded_tarPlugin = 1
         "}}}
-
-    "gui {{{
-        " font
-        set guifont=CaskaydiaCove\ Nerd\ Font:h12
-        " fullscreen
-        let g:neovide_fullscreen=v:true
-    " }}}
-
+    set clipboard+=unnamedplus
 " }}}
 " mappings {{{
     "normal {{{
@@ -339,7 +332,6 @@
 " pack config {{{
     "term {{{
         " set default shell to powershell
-        let g:term_default_shell = 'powershell'
 
         " }}}
     "vimwiki {{{

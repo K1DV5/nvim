@@ -173,7 +173,7 @@ require "paq" {
         sections = {
             lualine_a = {function() return vim.api.nvim_get_mode().mode:upper() end},
             lualine_b = {},
-            lualine_c = {"vim.fn.TabsStatusText()"},
+            lualine_c = {"tabs_status_text()"},
             lualine_x = {'diagnostics'},
             lualine_y = {'fileformat', 'filetype'},
             lualine_z = {'progress'},
@@ -188,7 +188,8 @@ require "paq" {
 
     setup("rmagatti/auto-session", 'auto-session', {
         log_level = 'info',
-        auto_session_suppress_dirs = {'~/', '~/projects'}
+        auto_session_suppress_dirs = {'~/', '~/projects'},
+        post_restore_cmds = {'call TabsAllBuffers()'},
     });
 }
 

@@ -204,6 +204,12 @@ require "paq" {
         auto_refresh = false,
     });
 
+    "rmagatti/auto-session";
+    setup('auto_session', {
+        log_level = 'info',
+        auto_session_suppress_dirs = {'~/', '~/projects'}
+    });
+
     -- look for alternatives in lua
     "mattn/emmet-vim";
 }

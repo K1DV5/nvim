@@ -167,26 +167,6 @@
         "}}}
 " }}}
 " functions {{{
-    function! S(save) "{{{
-        " session management
-        let file = substitute(stdpath('config'), '\\', '/', 'g') . '/Session.vim'
-        if a:save " save session
-            execute 'mksession!' file
-            return
-        endif
-        " restore
-        if filereadable(file)
-            let args = argv()
-            silent execute 'source' file
-            %argdel
-            for arg in args
-                execute 'argadd' arg
-            endfor
-            edit
-        endif
-    endfunction
-
-    " }}}
     function! s:gate(direc) "{{{
         " what to do at startup, and exit
         if a:direc == 'in'
@@ -194,7 +174,6 @@
             if argc()
                 execute 'cd' expand('%:p:h')
             else
-                call S(v:false)
                 call TabsAllBuffers()
             endif
         else
@@ -204,9 +183,6 @@
                     execute 'bwipeout!' buf
                 endif
             endfor
-            if !g:init_argc
-                call S(v:true)
-            endif
             xall!
         endif
     endfunction

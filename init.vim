@@ -58,6 +58,8 @@
         set title titlestring=%t
         " foldtext
         set foldtext=MyFoldText()
+        " system clipboard
+        set clipboard+=unnamedplus
 
         "}}}
     "performance {{{
@@ -78,7 +80,6 @@
         let g:loaded_2html_plugin = 1
         let g:loaded_tarPlugin = 1
         "}}}
-    set clipboard+=unnamedplus
 " }}}
 " mappings {{{
     "normal {{{

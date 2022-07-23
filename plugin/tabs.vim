@@ -74,7 +74,7 @@ function! TabsAllBuffers() abort
             call add(w:tabs_buflist, buf)
         endif
     endfor
-    call TabsReload()
+    lua tabs_reload()
 endfunction
 
 function! TabsNext()
@@ -175,7 +175,7 @@ function! TabsClose()
         let to_del = bufnr()
         call nvim_set_current_buf(alt)
         execute 'bdelete'.bang to_del
-        call TabsReload()
+        lua tabs_reload()
     else
         execute 'bdelete'.bang
     endif

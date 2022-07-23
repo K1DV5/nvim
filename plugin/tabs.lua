@@ -21,6 +21,13 @@ local function get_winvar(win, name)
     end
 end
 
+local function get_bufvar(buf, name)
+    local ok, value = pcall(vim.api.nvim_buf_get_var, buf, name)
+    if ok then
+        return value
+    end
+end
+
 local function get_alt_buf(win)  -- get the alternate buffer for the given window
     local bufs = get_winvar(win, 'tabs_buflist') or {}
     local l_bufs = vim.tbl_count(bufs)
@@ -100,3 +107,42 @@ function tabs_status_text()
     end
     return text
 end
+
+function tabs_reload()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local win_bufs = get_winvar(0, 'tabs_buflist')
+    if win_bufs then
+        local win_bufs_new = {}
+        local current_included = false
+        for i, buf in pairs(win_bufs) do
+            if vim.fn.buflisted(buf) ~= 0 then
+                table.insert(win_bufs_new, buf)
+                if buf == current_buf then
+                    current_included = true
+                end
+            end
+        end
+        if not current_included then  -- maybe added
+            table.insert(win_bufs_new, current_buf)
+        end
+        vim.api.nvim_win_set_var(0, 'tabs_buflist', win_bufs_new)
+    elseif vim.api.nvim_buf_get_name(current_buf) == '' and not get_bufvar(current_buf, 'modified') then -- empty
+        vim.api.nvim_win_set_var('tabs_buflist', {})
+    else
+        vim.api.nvim_win_set_var('tabs_buflist', {current_buf})
+    end
+end
+
+function tabs_all_buffers()
+    local win_bufs = get_winvar(0, 'tabs_buflist')
+    local win_bufs_new = {}
+    for i, buf in pairs(vim.api.nvim_list_bufs()) do
+        local empty = vim.api.nvim_buf_get_name(buf) == '' and not get_bufvar(buf, 'modified')
+        if vim.api.nvim_buf_is_valid(buf) and not empty then
+            table.insert(win_bufs_new, buf)
+        end
+    end
+    vim.api.nvim_win_set_var(0, 'tabs_buflist', win_bufs_new)
+    tabs_reload()
+end
+

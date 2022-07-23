@@ -189,7 +189,7 @@ require "paq" {
     setup("rmagatti/auto-session", 'auto-session', {
         log_level = 'info',
         auto_session_suppress_dirs = {'~/', '~/projects'},
-        post_restore_cmds = {'call TabsAllBuffers()'},
+        post_restore_cmds = {'lua tabs_all_buffers()'},
     });
 }
 

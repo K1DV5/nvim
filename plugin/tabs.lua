@@ -198,11 +198,9 @@ end
 vim.api.nvim_create_augroup("tabs", { clear = true })
 vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile', 'FileType', 'TermOpen'}, {
     group = "tabs",
-    pattern = '*',
     callback = tabs_reload,
 })
 vim.api.nvim_create_autocmd('WinLeave', {
     group = "tabs",
-    pattern = '*',
     callback = function() vim.api.nvim_set_var('tabs_alt_win', vim.api.nvim_get_current_win()) end,
 })

@@ -100,9 +100,9 @@
         noremap <Up> g<Up>
         noremap <Down> g<Down>
         "using tab for switching buffers
-        noremap <tab> <cmd>call TabsGo(v:count)<cr>
+        noremap <tab> <cmd>call v:lua.tabs_go(v:count)<cr>
         " switch windows using `
-        noremap ` <cmd>call TabsGo(v:count/1.0)<cr>
+        noremap ` <cmd>call v:lua.tabs_go(v:count, v:true)<cr>
         " fuzzy find file
         " noremap - <cmd>call Fuzzy('rg --files ' . repeat('../', v:count))<cr>
         " to return to normal mode in terminal and operator pending
@@ -146,8 +146,8 @@
         " show git status
         noremap <leader>g <cmd>call <sid>git()<cr>
         " closing current buffer
-        noremap <leader>bb <cmd>call TabsClose()<cr>
-        tnoremap <leader>bb <cmd>call TabsClose()<cr>
+        noremap <leader>bb <cmd>lua tabs_close()<cr>
+        tnoremap <leader>bb <cmd>lua tabs_close()<cr>
         " save file if changed
         noremap <leader>bu <cmd>update!<cr>
         " toggle spell check
@@ -174,8 +174,6 @@
             let g:init_argc = argc()
             if argc()
                 execute 'cd' expand('%:p:h')
-            else
-                call TabsAllBuffers()
             endif
         else
             " delete terminal buffers

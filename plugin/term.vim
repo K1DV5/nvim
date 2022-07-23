@@ -128,7 +128,7 @@ function! Term(cmd, ...)
             endif
         endfor
     endif
-    call TabsReload()
+    lua tabs_reload()
 endfunction
 
 " use the current process in the terminal as the buffer name

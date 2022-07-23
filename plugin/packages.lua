@@ -7,7 +7,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- setup packages only if they exist, to not prevent loading other parts
-local function setup(name, config, setup_func)
+local function setup(path, name, config, setup_func)
     if config == nil then
         config = {}
     elseif type(config) == 'function' then
@@ -15,7 +15,7 @@ local function setup(name, config, setup_func)
         if not success then
             print('package', name, 'setup error')
         end
-        return
+        return path
     end
     if setup_func == nil then
         setup_func = 'setup'
@@ -30,6 +30,7 @@ local function setup(name, config, setup_func)
     else
         print('package', name, 'not found')
     end
+    return path
 end
 
 require "paq" {
@@ -38,8 +39,7 @@ require "paq" {
     "neovim/nvim-lspconfig"; -- config in lsp.lua
     "RRethy/vim-illuminate";
 
-    "hrsh7th/nvim-cmp";
-    setup('cmp', function()
+    setup("hrsh7th/nvim-cmp", 'cmp', function()
         local cmp = require'cmp'
         local luasnip = require'luasnip'
         local function complete(direction)
@@ -95,40 +95,35 @@ require "paq" {
     "hrsh7th/cmp-buffer";
     "hrsh7th/cmp-nvim-lsp";
 
-    "windwp/nvim-autopairs";
-    setup('nvim-autopairs', {
-        check_ts = true,
+    setup("windwp/nvim-autopairs", 'nvim-autopairs', { check_ts = true });
+
+    setup("nvim-treesitter/nvim-treesitter", 'nvim-treesitter.configs', {
+        highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = false,
+        },
+        incremental_selection = { enable = true },
+        textobjects = { enable = true },
+        rainbow = {
+            enable = true,
+        },
+        context_commentstring = {
+            enable = true
+        },
+        textsubjects = {
+            enable = true,
+            keymaps = {
+                ['.'] = 'textsubjects-smart',
+                [';'] = 'textsubjects-container-outer',
+            }
+        },
+        indent = {
+            enable = true
+        },
+        vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
     });
 
-    "nvim-treesitter/nvim-treesitter";
-        setup('nvim-treesitter.configs', {
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = false,
-            },
-            incremental_selection = { enable = true },
-            textobjects = { enable = true },
-            rainbow = {
-                enable = true,
-            },
-            context_commentstring = {
-                enable = true
-            },
-            textsubjects = {
-                enable = true,
-                keymaps = {
-                    ['.'] = 'textsubjects-smart',
-                    [';'] = 'textsubjects-container-outer',
-                }
-            },
-            indent = {
-                enable = true
-            },
-            vim.cmd('set foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99')
-        });
-
-    "ur4ltz/surround.nvim";
-    setup('surround', {
+    setup("ur4ltz/surround.nvim", 'surround', {
         mappings_style = "surround"
     });
 
@@ -138,35 +133,25 @@ require "paq" {
 
     "JoosepAlviste/nvim-ts-context-commentstring";
 
-    "terrortylor/nvim-comment";
-        setup('nvim_comment', {
-            comment_empty = false
-        });
+    setup("terrortylor/nvim-comment", 'nvim_comment', {
+        comment_empty = false
+    });
 
-    "Mofiqul/vscode.nvim"; -- vscode's dark+ theme
-        setup('vscode', function()
-            if vim.g.vscode_style == nil then
-                vim.g.vscode_style = "dark"
-                vim.cmd[[colorscheme vscode]]
-            end
-        end);
+    setup("Mofiqul/vscode.nvim", 'vscode', function()
+        if vim.g.vscode_style == nil then
+            vim.g.vscode_style = "dark"
+            vim.cmd[[colorscheme vscode]]
+        end
+    end);
 
     "L3MON4D3/LuaSnip";
     "saadparwaiz1/cmp_luasnip";
 
     "liuchengxu/vista.vim";
-    -- "simrat39/symbols-outline.nvim";
-    --     setup('symbols_outline', function()
-    --         vim.g.symbols_outline = {
-    --             symbol_blacklist = {'Variable', 'Constant'},
-    --         }
-    --     end);
 
-    "jakewvincent/mkdnflow.nvim";
-    setup('mkdnflow');
+    setup("jakewvincent/mkdnflow.nvim", 'mkdnflow');
 
-    "nvim-telescope/telescope.nvim";
-    setup('telescope', function()
+    setup("nvim-telescope/telescope.nvim", 'telescope', function()
         require'telescope'.setup{
             defaults = {
                 preview = false,
@@ -178,8 +163,7 @@ require "paq" {
         vim.api.nvim_set_keymap('n', '-', '<cmd>Telescope find_files<CR>', {noremap = true, silent = true})
     end);
 
-    "hoob3rt/lualine.nvim";
-    setup('lualine', {
+    setup("hoob3rt/lualine.nvim", 'lualine', {
         options = {
             theme = 'codedark',
             section_separators = {'', ''},
@@ -199,19 +183,13 @@ require "paq" {
     "RRethy/nvim-treesitter-textsubjects";
 
     "nvim-lua/plenary.nvim"; -- for neogit, gitsigns
-    "TimUntersberger/neogit";
-    setup('neogit', {
-        auto_refresh = false,
-    });
 
-    "rmagatti/auto-session";
-    setup('auto_session', {
+    setup("TimUntersberger/neogit", 'neogit', { auto_refresh = false });
+
+    setup("rmagatti/auto-session", 'auto-session', {
         log_level = 'info',
         auto_session_suppress_dirs = {'~/', '~/projects'}
     });
-
-    -- look for alternatives in lua
-    "mattn/emmet-vim";
 }
 
 -- vim:foldmethod=marker:foldlevel=0

@@ -161,8 +161,8 @@
         " use system clipboard
         noremap <leader>c "+
         " toggle file and tag (definition) trees
-        noremap <leader>d <cmd>call <sid>tree('Vista nvim_lsp', 'vista_kind')<cr>
-        noremap <leader>D <cmd>Vista!<cr>
+        noremap <leader>d <cmd>call <sid>tree('AerialOpen', 'aerial')<cr>
+        noremap <leader>D <cmd>AerialClose<cr>
         noremap <leader>f <cmd>call <sid>tree('NvimTreeOpen', 'NvimTree')<cr>
         noremap <leader>F <cmd>NvimTreeClose<cr>
         "}}}

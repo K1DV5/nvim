@@ -147,8 +147,6 @@ require "paq" {
     "L3MON4D3/LuaSnip";
     "saadparwaiz1/cmp_luasnip";
 
-    "liuchengxu/vista.vim";
-
     setup("jakewvincent/mkdnflow.nvim", 'mkdnflow');
 
     setup("nvim-telescope/telescope.nvim", 'telescope', function()
@@ -190,6 +188,10 @@ require "paq" {
         log_level = 'info',
         auto_session_suppress_dirs = {'~/', '~/projects'},
         post_restore_cmds = {'lua tabs_all_buffers()'},
+    });
+    setup("stevearc/aerial.nvim", "aerial", {
+        default_direction = "prefer_left",
+        width = 0.17,
     });
 }
 

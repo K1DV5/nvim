@@ -36,7 +36,7 @@ function tabs_status_text()
                 local hl_icon = '%#' .. iconhl[2] .. '#'
                 icon = hl_icon .. ' ' .. iconhl[1] .. ' '
             else
-                icon = '%#Normal# %{v:lua.get_icon()[0]} '
+                icon = '%#Normal# %{v:lua.get_icon()[1]} '
             end
             text = text .. icon .. '%#Normal#' .. name .. '%m %#StatuslineNC#'
         else

@@ -74,7 +74,7 @@ local function toggle(size)
     if current_buf and vim.api.nvim_buf_is_loaded(current_buf) then
         vim.api.nvim_command('belowright ' .. term_height .. ' split +buffer\\ ' .. current_buf)
     elseif vim.tbl_count(tbuflist) > 0 then -- choose one of the others
-        vim.api.nvim_command('belowright ' .. term_height .. ' split +buffer\\ ' .. tbuflist[0])
+        vim.api.nvim_command('belowright ' .. term_height .. ' split +buffer\\ ' .. tbuflist[1])
     else -- create a new one
         return
     end

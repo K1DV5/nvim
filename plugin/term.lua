@@ -84,8 +84,7 @@ local function toggle(size)
 end
 
 function term(cmd, dir)
-    -- a:cmd - string | number | float - the cmd name or the desired win height
-    -- if a:cmd is a number
+    -- cmd - string | number - the cmd name or the desired win height
     if type(cmd) == 'number' then
         if toggle(cmd) then
             return
@@ -117,18 +116,17 @@ function term(cmd, dir)
             end
         end
     end
-    local map = vim.api.nvim_buf_set_keymap
-    local map_opts = {noremap=true, silent=true}
+    vim.api.nvim_command('lua tabs_reload()')
 	-- if the cmd has argumets, delete existing with the same cmd
-    if string.find(cmd, ' ') then
-        for i, buf in pairs(tbuflist) do
-            local name = vim.fn.substitute(vim.api.nvim_buf_get_name(buf), '//\\d\\+:', '//', '')
-            if name == buf_name then
-                vim.api.nvim_command('bdelete! ' .. buf)
-            end
+    if not string.find(cmd, ' ') then
+        return
+    end
+    for i, buf in pairs(tbuflist) do
+        local name = vim.fn.substitute(vim.api.nvim_buf_get_name(buf), '//\\d\\+:', '//', '')
+        if name == buf_name then
+            vim.api.nvim_command('bdelete! ' .. buf)
         end
     end
-    vim.api.nvim_command('lua tabs_reload()')
 end
 
 vim.api.nvim_create_user_command("T", function(opts) term(unpack(opts.fargs)) end, {complete = 'shellcmd', nargs = '*'})

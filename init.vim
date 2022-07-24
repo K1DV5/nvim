@@ -103,8 +103,6 @@
         noremap <tab> <cmd>call v:lua.tabs_go(v:count)<cr>
         " switch windows using `
         noremap ` <cmd>call v:lua.tabs_go(v:count, v:true)<cr>
-        " fuzzy find file
-        " noremap - <cmd>call Fuzzy('rg --files ' . repeat('../', v:count))<cr>
         " to return to normal mode in terminal and operator pending
         tnoremap kj <C-\><C-n>
         onoremap kj <esc>
@@ -138,11 +136,11 @@
     " leader {{{
         let mapleader = ','
         " open/close terminal pane
-        noremap <leader>t <cmd>call Term(0.3)<cr>
-        tnoremap <leader>t <cmd>call Term(0.3)<cr>
+        noremap <leader>t <cmd>call v:lua.term(0.3)<cr>
+        tnoremap <leader>t <cmd>call v:lua.term(0.3)<cr>
         " open big terminal window
-        noremap <leader>T <cmd>call Term(1)<cr>
-        tnoremap <leader>T <cmd>call Term(1)<cr>
+        noremap <leader>T <cmd>call v:lua.term(1)<cr>
+        tnoremap <leader>T <cmd>call v:lua.term(1)<cr>
         " show git status
         noremap <leader>g <cmd>call <sid>git()<cr>
         " closing current buffer
@@ -198,7 +196,7 @@
         "     execute 'make "'.expand('%:p').'"'
         "     echo "Done."
         " else
-            call Term('python ' . stdpath('config') . '/do.py '.expand('%:p'))
+            call v:lua.term('python ' . stdpath('config') . '/do.py '.expand('%:p'))
             norm i
         " endif
     endfunction
